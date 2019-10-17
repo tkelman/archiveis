@@ -2,12 +2,12 @@
 # -*- coding: utf-8 -*-
 import click
 import logging
-import asks
 from six.moves.urllib.parse import urljoin
 logger = logging.getLogger(__name__)
 
 
 async def do_post(
+    session,
     target_url,
     user_agent="archiveis (https://github.com/pastpages/archiveis)",
     proxies={},
@@ -37,7 +37,7 @@ async def do_post(
     )
     if proxies:
         get_kwargs['proxies'] = proxies
-    response = await asks.get(domain + "/", **get_kwargs)
+    response = await session.get(domain + "/", **get_kwargs)
     response.raise_for_status()
 
     # It will need to be parsed from the homepage response headers
@@ -67,7 +67,7 @@ async def do_post(
         post_kwargs['proxies'] = proxies
 
     logger.debug("Requesting {}".format(save_url))
-    return await asks.post(save_url, **post_kwargs)
+    return await session.post(save_url, **post_kwargs)
 
 
 def parse_memento(response):
@@ -97,6 +97,7 @@ def parse_memento(response):
 
 
 async def capture(
+    session,
     target_url,
     user_agent="archiveis (https://github.com/pastpages/archiveis)",
     proxies={},
@@ -106,7 +107,7 @@ async def capture(
 
     Returns the URL where the capture is stored.
     """
-    response = await do_post(target_url, user_agent, proxies)
+    response = await do_post(session, target_url, user_agent, proxies)
     response.raise_for_status()
     return parse_memento(response)
 
