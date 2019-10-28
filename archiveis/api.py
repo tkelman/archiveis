@@ -19,13 +19,13 @@ async def do_post(
     Returns the POST response object
     """
     # Put together the URL that will save our request
-    domain = "http://archive.is"
+    domain = "http://archive.md"
     save_url = urljoin(domain, "/submit/")
 
     # Configure the request headers
     headers = {
         'User-Agent': user_agent,
-        "host": "archive.is",
+        "host": "archive.md",
     }
 
     # Request a unique identifier for our activity
