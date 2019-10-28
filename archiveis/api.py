@@ -93,7 +93,7 @@ def parse_memento(response):
     logger.error("Status code: {}".format(response.status_code))
     logger.error(response.headers)
     logger.error(response.text)
-    raise Exception("No memento returned by archive.is")
+    return "no memento url returned by archive.is"
 
 
 async def capture(
