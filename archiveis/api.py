@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import click
 import logging
-import requests
+from torrequest import TorRequest
 from six.moves.urllib.parse import urljoin
 logger = logging.getLogger(__name__)
 
@@ -37,8 +37,9 @@ def do_post(
     )
     if proxies:
         get_kwargs['proxies'] = proxies
-    response = requests.get(domain + "/", **get_kwargs)
-    response.raise_for_status()
+    with TorRequest() as tr:
+        response = tr.get(domain + "/", **get_kwargs)
+        response.raise_for_status()
 
     # It will need to be parsed from the homepage response headers
     html = str(response.content)
@@ -67,7 +68,8 @@ def do_post(
         post_kwargs['proxies'] = proxies
 
     logger.debug("Requesting {}".format(save_url))
-    return requests.post(save_url, **post_kwargs)
+    with TorRequest() as tr:
+        return tr.post(save_url, **post_kwargs)
 
 
 def parse_memento(response):

@@ -1,5 +1,5 @@
 six
-requests>=2.20.0
+torrequest
 click
 
 flake8

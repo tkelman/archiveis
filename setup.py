@@ -23,7 +23,7 @@ setup(
     ],
     install_requires=[
         'six',
-        'requests>=2.20.0',
+        'torrequest',
         'click'
     ],
 entry_points='''
